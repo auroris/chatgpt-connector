@@ -1,8 +1,8 @@
-import dotenv from 'dotenv';
-import process from 'node:process';
-import fetch from 'node-fetch';
-import path from 'path';
-import { fileURLToPath, pathToFileURL } from 'url';
+import dotenv from "dotenv";
+import process from "node:process";
+import fetch from "node-fetch";
+import path from "path";
+import { fileURLToPath, pathToFileURL } from "url";
 
 /**
  * This script is intended to be run from the command line and is not used by the
@@ -11,17 +11,19 @@ import { fileURLToPath, pathToFileURL } from 'url';
  */
 
 // Load environment variables from the .dev.vars file
-dotenv.config({ path: '.dev.vars' });
+dotenv.config({ path: ".dev.vars" });
 
 const token = process.env.DISCORD_TOKEN;
 const applicationId = process.env.DISCORD_APPLICATION_ID;
 
 // Ensure that required environment variables are set
 if (!token) {
-  throw new Error('The DISCORD_TOKEN environment variable is required.');
+  throw new Error("The DISCORD_TOKEN environment variable is required.");
 }
 if (!applicationId) {
-  throw new Error('The DISCORD_APPLICATION_ID environment variable is required.');
+  throw new Error(
+    "The DISCORD_APPLICATION_ID environment variable is required.",
+  );
 }
 
 // Get the current file path and directory name
@@ -29,7 +31,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Construct the URL to the commands file
-const commandsFilePath = path.join(__dirname, 'commands.js');
+const commandsFilePath = path.join(__dirname, "commands.js");
 const commandsFileUrl = pathToFileURL(commandsFilePath).href;
 
 /**
@@ -39,7 +41,7 @@ const commandsFileUrl = pathToFileURL(commandsFilePath).href;
 async function getCommands() {
   console.log(`Importing commands from: ${commandsFileUrl}`);
   const commandsModule = await import(commandsFileUrl);
-  console.log('Imported commands module:', commandsModule);
+  console.log("Imported commands module:", commandsModule);
   return Object.values(commandsModule);
 }
 
@@ -52,19 +54,19 @@ async function registerCommands(commands) {
 
   const response = await fetch(url, {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bot ${token}`,
     },
-    method: 'PUT',
+    method: "PUT",
     body: JSON.stringify(commands),
   });
 
   if (response.ok) {
-    console.log('Registered all commands');
+    console.log("Registered all commands");
     const data = await response.json();
     console.log(JSON.stringify(data, null, 2));
   } else {
-    console.error('Error registering commands');
+    console.error("Error registering commands");
     let errorText = `Error registering commands \n ${response.url}: ${response.status} ${response.statusText}`;
     try {
       const error = await response.text();
@@ -72,7 +74,7 @@ async function registerCommands(commands) {
         errorText = `${errorText} \n\n ${error}`;
       }
     } catch (err) {
-      console.error('Error reading body from request:', err);
+      console.error("Error reading body from request:", err);
     }
     console.error(errorText);
   }
@@ -84,6 +86,6 @@ async function registerCommands(commands) {
     const commands = await getCommands();
     await registerCommands(commands);
   } catch (error) {
-    console.error('Failed to register commands:', error);
+    console.error("Failed to register commands:", error);
   }
 })();

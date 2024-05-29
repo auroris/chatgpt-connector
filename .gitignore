@@ -1,5 +1,7 @@
 .wrangler/
 .vs/
+.package-lock.json
+.dev.vars
 
 # Logs
 logs
@@ -81,7 +83,6 @@ web_modules/
 .env.test.local
 .env.production.local
 .env.local
-.dev.vars
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

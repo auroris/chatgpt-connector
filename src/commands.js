@@ -4,57 +4,58 @@
  */
 
 export const AI_COMMAND = {
-  name: 'ai',
-  description: 'Send a message to ChatGPT',
+  name: "ai",
+  description: "Send a message to ChatGPT",
   options: [
     {
-      name: 'prompt',
+      name: "prompt",
       type: 3, // 3 represents a string type
-      description: 'The message to send to ChatGPT',
+      description: "The message to send to ChatGPT",
       required: true,
     },
   ],
 };
 
 export const DALLE_COMMAND = {
-  name: 'imagine',
-  description: 'Generate an image with DALL-E',
+  name: "imagine",
+  description: "Generate an image with DALL-E",
   options: [
     {
-      name: 'prompt',
-      description: 'The prompt for DALL-E',
+      name: "prompt",
+      description: "The prompt for DALL-E",
       type: 3, // STRING type
       required: true,
     },
     {
-      name: 'ratio',
-      description: 'Image ratio (default: square)',
+      name: "ratio",
+      description: "Image ratio (default: square)",
       type: 3, // STRING type
       required: false,
       choices: [
         {
-          name: 'Square',
-          value: 'square',
+          name: "Square",
+          value: "square",
         },
         {
-          name: 'Wide',
-          value: 'wide',
+          name: "Wide",
+          value: "wide",
         },
         {
-          name: 'Tall',
-          value: 'tall',
+          name: "Tall",
+          value: "tall",
         },
       ],
     },
     {
-      name: 'revise',
-      description: 'Allow Dall-E to automatically revise your prompt (default: true)',
+      name: "revise",
+      description:
+        "Allow Dall-E to automatically revise your prompt (default: true)",
       type: 5, // BOOLEAN type
       required: false,
     },
     {
-      name: 'hd',
-      description: 'Generate image in HD quality (default: true)',
+      name: "hd",
+      description: "Generate image in HD quality (default: true)",
       type: 5, // BOOLEAN type
       required: false,
     },

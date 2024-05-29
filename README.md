@@ -16,12 +16,14 @@ This project demonstrates integration of OpenAI's ChatGPT with a Discord server 
 ## Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone <repository-url>
    cd <repository-directory>
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```

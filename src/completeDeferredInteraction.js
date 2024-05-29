@@ -13,21 +13,32 @@
  * @returns {Promise<Response>} - The response from the Discord API.
  * @throws {Error} - Throws an error if the HTTP request to Discord fails.
  */
-export async function completeDeferredInteraction(text, attachment, attachmentName, discordToken, applicationId, interactionToken) {
+export async function completeDeferredInteraction(
+  text,
+  attachment,
+  attachmentName,
+  discordToken,
+  applicationId,
+  interactionToken,
+) {
   try {
     const webhookUrl = `https://discord.com/api/v10/webhooks/${applicationId}/${interactionToken}/messages/@original`;
+    var headers = {
+      Authorization: `Bot ${discordToken}`,
+    };
+    var body = {};
 
     if (attachment) {
-      // Auto-detect attachment name if not provided
+      // Auto-determine attachment name if not provided
       if (!attachmentName) {
         const mimeType = attachment.type;
-        const extension = mimeType.split('/')[1];
+        const extension = mimeType.split("/")[1];
         attachmentName = `attachment.${extension}`;
       }
 
       // Create form data for attachment upload
-      const formData = new FormData();
-      formData.append('files[0]', attachment, attachmentName);
+      body = new FormData();
+      body.append("files[0]", attachment, attachmentName);
 
       const metadata = {
         content: text,
@@ -40,43 +51,24 @@ export async function completeDeferredInteraction(text, attachment, attachmentNa
         ],
       };
 
-      formData.append('payload_json', JSON.stringify(metadata));
-
-      // Upload the attachment to Discord
-      const response = await fetch(webhookUrl, {
-        method: 'PATCH',
-        body: formData,
-        headers: {
-          'Authorization': `Bot ${discordToken}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP Error ${response.status} ${response.statusText}`);
-      }
-
-      return response;
+      body.append("payload_json", JSON.stringify(metadata));
     } else {
-      const body = JSON.stringify({ content: text });
-      const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bot ${discordToken}`,
-      };
-
-      // Send the text message to Discord
-      const response = await fetch(webhookUrl, {
-        method: 'PATCH',
-        body: body,
-        headers: headers,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP Error ${response.status} ${response.statusText}`);
-      }
-
-      return response;
+      headers["Content-Type"] = "application/json";
+      body = JSON.stringify({ content: text });
     }
+
+    const response = await fetch(webhookUrl, {
+      method: "PATCH",
+      body: body,
+      headers: headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP Error ${response.status} ${response.statusText}`);
+    }
+
+    return response;
   } catch (error) {
-    console.error('Error completing deferred interaction in Discord:', error);
+    console.error("Error completing deferred interaction in Discord:", error);
   }
 }
