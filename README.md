@@ -4,7 +4,7 @@ This project is a ChatGPT connector for Discord that runs as a Cloudflare worker
 
 ## Description
 
-This project enables integration of OpenAI's ChatGPT with a Discord server using Cloudflare Workers. It allows you to set up a bot that can interact with users on your Discord server, leveraging the capabilities of ChatGPT for various interactions.
+This project demonstrates integration of OpenAI's ChatGPT with a Discord server using Cloudflare Workers. It allows you to set up a bot that can interact with users on your Discord server, leveraging the capabilities of ChatGPT for various interactions.
 
 ## Prerequisites
 
@@ -27,11 +27,7 @@ This project enables integration of OpenAI's ChatGPT with a Discord server using
    ```
 
 3. **Set up your environment variables:**
-   Create a `.env` file in the root directory and add the following environment variables:
-   ```plaintext
-   DISCORD_BOT_TOKEN=<your-discord-bot-token>
-   OPENAI_API_KEY=<your-openai-api-key>
-   ```
+   Create a `.dev.vars` file in the root directory from `.dev.vars.example` and fill out the variables with your bot's secrets.
 
 4. **Deploy to Cloudflare Workers:**
    Follow the instructions in the Cloudflare Workers documentation to deploy your worker. You will need to create a new worker and copy the contents of `server.js` to the worker script.
@@ -42,12 +38,12 @@ Once the bot is deployed, invite it to your Discord server using the OAuth2 URL 
 
 ## Files
 
-- `commands.js`: Contains the command handling logic for the bot.
-- `completeDeferredInteraction.js`: Manages deferred interactions.
-- `dalleCommand.js`: Handles DALL-E related commands.
-- `register.js`: Registers the commands with Discord.
-- `server.js`: The main entry point of the Cloudflare worker.
-- `aiCommand.js`: Handles AI-related commands.
+- `commands.js`: Defines the metadata for the bot commands.
+- `completeDeferredInteraction.js`: Handles completing a deferred Discord interaction, allowing the bot to send a message with an optional attachment after a delay.
+- `aiCommand.js`: Implements the logic for handling the ai command, which sends a message to ChatGPT and returns the response.
+- `dalleCommand.js`: Implements the logic for handling the imagine command, which generates an image using DALL-E based on the provided prompt and options.
+- `register.js`: Contains the code for registering the bot commands with Discord, ensuring that the commands are recognized and can be used in the server.
+- `server.js`: The main entry point for the Cloudflare Worker. It routes incoming requests to the appropriate command handlers and provides utility functions for JSON responses.
 
 ## Contributing
 
