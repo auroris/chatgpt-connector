@@ -18,12 +18,10 @@ const applicationId = process.env.DISCORD_APPLICATION_ID;
 
 // Ensure that required environment variables are set
 if (!token) {
-  throw new Error("The DISCORD_TOKEN environment variable is required.");
+    throw new Error("The DISCORD_TOKEN environment variable is required.");
 }
 if (!applicationId) {
-  throw new Error(
-    "The DISCORD_APPLICATION_ID environment variable is required.",
-  );
+    throw new Error("The DISCORD_APPLICATION_ID environment variable is required.");
 }
 
 // Get the current file path and directory name
@@ -39,10 +37,10 @@ const commandsFileUrl = pathToFileURL(commandsFilePath).href;
  * @returns {Promise<Array>} A promise that resolves to an array of commands.
  */
 async function getCommands() {
-  console.log(`Importing commands from: ${commandsFileUrl}`);
-  const commandsModule = await import(commandsFileUrl);
-  console.log("Imported commands module:", commandsModule);
-  return Object.values(commandsModule);
+    console.log(`Importing commands from: ${commandsFileUrl}`);
+    const commandsModule = await import(commandsFileUrl);
+    console.log("Imported commands module:", commandsModule);
+    return Object.values(commandsModule);
 }
 
 /**
@@ -50,42 +48,42 @@ async function getCommands() {
  * @param {Array} commands - An array of commands to register.
  */
 async function registerCommands(commands) {
-  const url = `https://discord.com/api/v10/applications/${applicationId}/commands`;
+    const url = `https://discord.com/api/v10/applications/${applicationId}/commands`;
 
-  const response = await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bot ${token}`,
-    },
-    method: "PUT",
-    body: JSON.stringify(commands),
-  });
+    const response = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bot ${token}`,
+        },
+        method: "PUT",
+        body: JSON.stringify(commands),
+    });
 
-  if (response.ok) {
-    console.log("Registered all commands");
-    const data = await response.json();
-    console.log(JSON.stringify(data, null, 2));
-  } else {
-    console.error("Error registering commands");
-    let errorText = `Error registering commands \n ${response.url}: ${response.status} ${response.statusText}`;
-    try {
-      const error = await response.text();
-      if (error) {
-        errorText = `${errorText} \n\n ${error}`;
-      }
-    } catch (err) {
-      console.error("Error reading body from request:", err);
+    if (response.ok) {
+        console.log("Registered all commands");
+        const data = await response.json();
+        console.log(JSON.stringify(data, null, 2));
+    } else {
+        console.error("Error registering commands");
+        let errorText = `Error registering commands \n ${response.url}: ${response.status} ${response.statusText}`;
+        try {
+            const error = await response.text();
+            if (error) {
+                errorText = `${errorText} \n\n ${error}`;
+            }
+        } catch (err) {
+            console.error("Error reading body from request:", err);
+        }
+        console.error(errorText);
     }
-    console.error(errorText);
-  }
 }
 
 // Self-invoking async function to get and register commands
 (async () => {
-  try {
-    const commands = await getCommands();
-    await registerCommands(commands);
-  } catch (error) {
-    console.error("Failed to register commands:", error);
-  }
+    try {
+        const commands = await getCommands();
+        await registerCommands(commands);
+    } catch (error) {
+        console.error("Failed to register commands:", error);
+    }
 })();

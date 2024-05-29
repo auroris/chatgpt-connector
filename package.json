@@ -28,5 +28,9 @@
     "discord-interactions": "^3.4.0",
     "itty-router": "^4.0.13",
     "openai": "^4.47.1"
+  },
+  "prettier": {
+    "proseWrap": "preserve",
+    "singleAttributePerLine": false
   }
 }

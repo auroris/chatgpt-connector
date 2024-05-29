@@ -1,6 +1,6 @@
 .wrangler/
 .vs/
-.package-lock.json
+package-lock.json
 .dev.vars
 
 # Logs
