@@ -51,7 +51,7 @@ router.post("/", async (request, env, event) => {
                 return new JsonResponse({
                     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                     data: {
-                        content: await aiCommand(interaction, env.OPENAI_API_KEY),
+                        content: await aiCommand(interaction, env.OPENAI_API_KEY, env.DISCORD_TOKEN),
                     },
                 });
             }
